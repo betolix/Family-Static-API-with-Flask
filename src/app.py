@@ -37,7 +37,7 @@ def handle_hello():
     return jsonify(response_body), 200
 
 
-@app.route('/members/<int:id>', methods=['GET'])
+@app.route('/member/<int:id>', methods=['GET'])
 def get_specific_family_member(id):
     member= jackson_family.get_member(id)
     
@@ -49,7 +49,7 @@ def get_specific_family_member(id):
             'message': 'User not found'
         }), 400
 
-@app.route('/members/<int:id>', methods=['DELETE'])
+@app.route('/member/<int:id>', methods=['DELETE'])
 def delete_specific_family_member(id):
     member= jackson_family.get_member(id)
     
@@ -58,6 +58,7 @@ def delete_specific_family_member(id):
         jackson_family.delete_member(id)
         return jsonify({
             'status': 'successful',
+            'done': True,
             'message': 'Family member successfully deleted'
         }), 200
         
@@ -70,14 +71,22 @@ def delete_specific_family_member(id):
 
 
 # WORKING HERE
+# @app.route('/member', methods=['POST'])
+# def create_family_member(params):
+#     jackson_family.add_member(params)
+#     return jsonify({
+#         'status': 'successful',
+#         'message': 'Family member successfully deleted'
+#     }),200
+
 @app.route('/member', methods=['POST'])
-def create_family_member(params):
-    jackson_family.add_member(params)
+def create_family_member():
+    rb = request.get_json()
+    jackson_family.add_member(rb)
     return jsonify({
         'status': 'successful',
-        'message': 'Family member successfully deleted'
+        'message': 'Family member successfully posted'
     }),200
-
 
 
 
